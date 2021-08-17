@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        
+                        <link rel="stylesheet" type="text/css" href="/dist/semantic.css">
+            <link rel="stylesheet" type="text/css" href="/css/sem2.css">
+        
+    <script src="/js/highlight.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <link rel="stylesheet" href="/css/agate.css" />
+
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+        <title>
+        Manejo de archivos en PHP        </title>
+
+        <meta name="description" content="
+        Principales conceptos y funciones para el manejo de archivos en PHP">
+                    <script>
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+                ga('create', 'UA-62157855-1', 'auto');
+                ga('send', 'pageview');
+            </script>
+            </head>
+
+    <body>
+
+        <div class="ui large top fixed hidden menu">
+    <div class="ui container">
+
+        <a class="active item" href="/">Diego Lázaro</a>
+        <a class="active red item" href="https://angular.diego.com.es">Angular</a>
+        <a class="item" href="https://leanpub.com/guiadephp">Libro de PHP</a>
+
+        <div class="right item">
+            <a href="#"><i class="arrow up icon"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="ui left vertical inverted sidebar labeled icon menu">
+    <a class="item" href="/">
+        <i class="home icon"></i>
+        Inicio
+    </a>
+    <a class="active red item" href="https://angular.diego.com.es">
+        <i class="circle icon"></i>
+        Angular
+    </a>
+</div>
+        <div class="pusher">
+                <div class="ui inverted vertical masthead center aligned segment">
+        <div class="ui container">
+    <div class="ui large secondary inverted pointing menu">
+
+        <a class="toc item">
+            <i class="sidebar icon"></i>
+        </a>
+
+        <a class="active item" href="/">Diego Lázaro</a>
+        <a class="item" href="/contacto">Contacto</a>
+        <a class="active red item" href="https://angular.diego.com.es">Angular</a>
+
+        <div class="right item">
+            <a class="ui inverted button" href="https://leanpub.com/guiadephp">Libro de PHP</a>
+        </div>
+
+    </div>
+</div>
+
+            
+                 <div class="ui text container">
+
+                        <div class="ui inverted segment">
+                                                    </div>
+
+                        <h1 class="ui inverted header">
+                            Manejo de archivos en PHP                        </h1>
+
+                        <div class="ui text container diego-subheader">
+                            <h2>Principales conceptos y funciones para el manejo de archivos en PHP</h2>
+                        </div>
+
+                 </div>
+
+                </div>
+
+        <div class="main ui container">
+        <div class="ui basic segment">
+
+            
+            
+    
+    <div class="ui yellow message">
+        <i class="close icon"></i>
+        <div class="header">
+            Contenido modificable
+        </div>
+
+        <p>Si ves errores o quieres modificar/añadir contenidos, puedes
+                    <a href="https://github.com/diegotham/certificacion-php/blob/master/5-Files/1-manejo-de-archivos-en-php.md"><i class="github icon"></i>crear un pull request</a>. Gracias</p>
+            </div>
+
+    
+    <div class="ui basic segment">
+        <p><strong>Indice de contenido</strong></p>
+<ol>
+<li>Abrir, leer, escribir y cerrar un archivo</li>
+<li>Puntero de archivo</li>
+<li>Obtener información de un archivo</li>
+<li>Funciones de directorios</li>
+</ol>
+<h3>1. Abrir, leer, escribir y cerrar un archivo</h3>
+<h4><strong>Abrir un archivo</strong></h4>
+<p>Los <strong>archivos en PHP</strong> se abren con la función <em><strong>fopen()</strong></em>, que requiere dos parámetros: el <strong>archivo que se quiere abrir</strong> y el <strong>modo en el que abrir el archivo</strong>. La función devuelve un <strong>puntero</strong> en el archivo si es satisfactoria o <strong>cero</strong> si no lo es. Los archivos se abren para realizar operaciones de lectura o escritura.</p>
+<pre><code>$fp = fopen("miarchivo.txt", "r");</code></pre>
+<p>Si no es posible abrir el archivo, devuelve cero, por eso es frecuente utilizar esta función en una condición:</p>
+<pre><code>if (!$fp = fopen("miarchivo.txt", "r")){
+    echo "No se ha podido abrir el archivo";
+}</code></pre>
+<p>Se puede abrir un archivo pero también una <strong>URL externa</strong>, ya que <em>fopen()</em> realmente lo que hace es crear una conexión, por eso hay que cerrarla posteriormente.</p>
+<pre><code>$fp = fopen("http://localhost:8000", "r");</code></pre>
+<p>Los <strong>modos de acceso existentes para fopen</strong> son:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Modo</strong></td>
+<td><strong>Descripción</strong></td>
+</tr>
+<tr>
+<td><strong>r</strong></td>
+<td>Apertura para lectura. Puntero al principio del archivo</td>
+</tr>
+<tr>
+<td><strong>r+</strong></td>
+<td>Apertura para lectura y escritura. Puntero al principio del archivo</td>
+</tr>
+<tr>
+<td><strong>w</strong></td>
+<td>Apertura para escritura. Puntero al principio del archivo y lo sobreescribe. Si no existe se intenta crear.</td>
+</tr>
+<tr>
+<td><strong>w+</strong></td>
+<td>Apertura para lectura y escritura. Puntero al principio del archivo y lo sobreescribe. Si no existe se intenta crear.</td>
+</tr>
+<tr>
+<td><strong>a</strong></td>
+<td>Apertura para escritura. Puntero al final del archivo. Si no existe se intenta crear.</td>
+</tr>
+<tr>
+<td><strong>a+</strong></td>
+<td>Apertura para lectura y escritura. Puntero al final del archivo. Si no existe se intenta crear.</td>
+</tr>
+<tr>
+<td><strong>x</strong></td>
+<td>Creación y apertura para sólo escritura. Puntero al principio del archivo. Si el archivo ya existe dará error E_WARNING. Si no existe se intenta crear.</td>
+</tr>
+<tr>
+<td><strong>x+</strong></td>
+<td>Creación y apertura para lectura y escritura. Mismo comportamiento que x.</td>
+</tr>
+<tr>
+<td><strong>c</strong></td>
+<td>Apertura para escritura. Si no existe se crea. Si existe no se sobreescribe ni da ningún error. Puntero al principio del archivo.</td>
+</tr>
+<tr>
+<td><strong>c+</strong></td>
+<td>Apertura para lectura y escritura. Mismo comportamiento que C.</td>
+</tr>
+</tbody>
+</table>
+<p>Algunas <strong>consideraciones</strong> de la tabla:</p>
+<ul>
+<li>Si el archivo no es escribible, abrirlo con <em>r+</em> fallará, incluso cuando sólo se intenta leer.</li>
+<li><em>w</em> y <em>w+</em> eliminarán el contenido de cualquier archivo. Para sólo añadir y no borrar, se usa a y <em>a+</em>.</li>
+<li>Si quieres crear nuevos archivos y evitar sobreescribir sin querer un archivo existente, utiliza <em>x</em> o <em>x+</em>.</li>
+<li>Cuando se trabaja con <strong>archivos binarios</strong>, como imágenes, hay que añadir 'b' después del modo. Como <em>rb</em> o <em>r+b</em></li>
+</ul>
+<h4><strong>Leer un archivo</strong></h4>
+<p>Una vez abierto el archivo, vamos a leerlo y guardar sus contenidos en una variable con <em>fread()</em>:</p>
+<pre><code>$file = "miarchivo.txt";
+$fp = fopen($file, "r");
+$contents = fread($fp, filesize($file));</code></pre>
+<p>La variable <em>$contents</em> guardará el contenido que obtengamos con la función <em>fread()</em>. Esta función requiere dos parámetros, el archivo abierto y la longitud que queremos leer de dicho archivo (en bytes). En este caso hemos empleado la función <em>filesize()</em> para obtener el tamaño del archivo y así devolver todo su contenido.</p>
+<h4><strong>Cerrar un archivo</strong></h4>
+<p>Finalmente, vamos a cerrar el archivo (no es obligatorio pero se recomienda):</p>
+<pre><code>fclose($fp);</code></pre>
+<h4><strong>Escribir en un archivo</strong></h4>
+<p>Al igual que para <strong>leer un archivo</strong>, hay más de una forma de <strong>escribir</strong> en uno. La forma más básica es utilizar la función <em>fwrite()</em> (o <em>fputs()</em>, que es su alias):</p>
+<pre><code>$file = "miarchivo.txt";
+$texto = "Hola que tal";
+$fp = fopen($file, "w");
+fwrite($fp, $texto);
+fclose($fp);</code></pre>
+<p>Esta vez hemos empleado el <strong>modo w</strong>, que permite escribir sobreescribiendo el archivo. </p>
+<p>Podemos <strong>limitar la longitud de datos que queremos escribir</strong> (todos los datos que había en el archivo se borrarán por completo igualmente):</p>
+<pre><code>$file = "miarchivo.txt";
+$texto = "Hola que tal";
+$fp = fopen($file, "w");
+fwrite($fp, $texto, 4); // Escribirá sólo: Hola</code></pre>
+<p>Si el archivo <em>miarchivo.txt</em> no existe, se creará automáticamente con el <strong>modo w de la función fopen</strong>.</p>
+<h3>2. Puntero de archivo</h3>
+<p>Un <strong>puntero de archivo</strong> (<em>file pointer</em> o <em>handle</em>) es una <strong>variable que hace referencia a un archivo</strong>. Es una variable que <strong>apunta a un archivo en concreto</strong>, y normalmente se obtiene cuando se abre con <em>fopen()</em>.</p>
+<p>PHP y su recolección de basuras cierra todos los punteros de archivos al final de la ejecución del script, aunque se considera una buena práctica cerrar los archivos manualmente con <em>fclose()</em>.</p>
+<p>Además de apuntar a un archivo, apunta a una <strong>posición concreta en ese archivo</strong>. En la mayoría de los casos cuando se abre un archivo el puntero apunta al principio (posición 0) o al final del archivo.</p>
+<p>La función <em>feof()</em> es utilizada con frecuencia en el <strong>manejo de archivos en PHP</strong>. Esta función <strong>comprueba si el puntero se encuentra al final del archivo</strong>. Se utiliza cuando se recorre<strong> un archivo línea por línea</strong> o para la <strong>lectura de grandes archivos</strong>, mediante un condicional:</p>
+<pre><code>$archivo = "miarchivo.txt";
+// Abrimos el archivo
+$fp = fopen($archivo, "r");
+// Loop que parará al final del archivo, cuando feof sea true:
+while(!feof($fp)){
+    echo fread($fp, 4092);
+}
+</code></pre>
+<p>El código anterior sólo cargará 4kb de datos de vez, lo que reduce el uso de memoria para grandes archivos.</p>
+<p><strong>Seeking</strong> es mover el puntero de un archivo. Para mover el puntero se puede usar la función <em>fseek()</em>, y para encontrar la posición de un puntero dado <em>ftell()</em>. Vamos a ver algunos ejemplos:</p>
+<pre><code>$file = "miarchivo.txt";
+$texto = "Hola que tal 12345";
+$fp = fopen($file, "w");
+fwrite($fp, $texto);
+fclose($fp);</code></pre>
+<p>Ahora abriremos el archivo para ir viendo <em>fseek</em> y <em>ftell</em>:</p>
+<pre><code>$fp = fopen($file, "r");
+// Si lo hemos abierto con r, siempre empieza desde el principio:
+echo ftell($fp) . "&lt;br&gt;"; // Devuelve 0
+// Colocamos el apuntador en la posicion 10:
+fseek($fp, 10);
+// Mostramos la posición actual:
+echo ftell($fp) . "&lt;br&gt;"; // Devuelve 10
+// Se puede indicar una posición sin contenido:
+fseek($fp, 1000);
+echo ftell($fp) . "&lt;br&gt;"; // Devuelve 1000
+// Para ir al final del archivo se emplea un tercer argumento en fseek:
+fseek($fp, 0, SEEK_END);
+echo ftell($fp) . "&lt;br&gt;"; // Devuelve 18
+// Para mover el apuntador a una posición relativa se emplea SEEK_CUR:
+fseek($fp, -5, SEEK_CUR);
+echo ftell($fp) . "&lt;br&gt;"; // Devuelve 13</code></pre>
+<p>No es necesario emplear <em>fseek()</em> para mover el puntero, también se puede hacer cuando se lee o se escribe un archivo:</p>
+<pre><code>// Cambiar el puntero leyendo un archivo:
+$file = "miarchivo.txt";
+$fp = fopen($file, "r");
+// Leemos 10 bytes
+$datos = fread($fp, 10);
+echo ftell($fp); // Devuelve 10
+// Cambiar el puntero escribiendo un archivo:
+$file = "miarchivo.txt";
+$texto = "12345";
+$fp = fopen($file, "w");
+// Escribimos los 5 bytes del texto:
+fwrite($fp, $texto);
+echo ftell
